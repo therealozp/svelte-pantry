@@ -16,12 +16,13 @@
 
 		while (updateQueue.length > 0) {
 			const { itemId, action } = updateQueue.shift();
+			console.log(`Processing ${action} for item ${itemId}`);
 			const res = await fetch(`/api/${action}Item`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ itemId }),
+				body: JSON.stringify({ itemId: itemId }),
 			});
 			const data = await res.json();
 			if (!res.ok) {
@@ -35,7 +36,6 @@
 					items[itemId].count = count;
 					return items;
 				});
-				// Optionally handle the error, e.g., revert the optimistic update
 			}
 		}
 
@@ -44,12 +44,12 @@
 
 	const incrementItem = () => {
 		// Optimistically update the UI
+		console.log('Incrementing item:', itemId);
 		count += 1;
 		itemStore.update((items) => {
 			items[itemId].count = count;
 			return items;
 		});
-
 		// Add to the queue
 		updateQueue.push({ itemId, action: 'increment' });
 		processQueue();
@@ -77,7 +77,7 @@
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ itemId }),
+				body: JSON.stringify({ itemId: itemId }),
 			});
 			const data = await res.json();
 			if (res.ok) {
@@ -102,10 +102,20 @@
 		<p>Count: {count}</p>
 	</div>
 	<div class="flex">
-		<Button class="m-2" on:click={incrementItem} variant="outline" size="icon">
+		<Button
+			class="m-2"
+			on:click={() => incrementItem()}
+			variant="outline"
+			size="icon"
+		>
 			<Plus size={24} />
 		</Button>
-		<Button class="m-2" on:click={decrementItem} variant="outline" size="icon">
+		<Button
+			class="m-2"
+			on:click={() => decrementItem()}
+			variant="outline"
+			size="icon"
+		>
 			<Minus size={24} />
 		</Button>
 		<Button

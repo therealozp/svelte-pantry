@@ -24,7 +24,16 @@
 			key: 'name',
 			all: true,
 		})
-		.map((result) => result.obj);
+		.reduce((acc, result) => {
+			// Find the ID of the item in the original items object
+			const itemId = Object.keys(items).find(
+				(key) => items[key] === result.obj
+			);
+			if (itemId) {
+				acc[itemId] = result.obj;
+			}
+			return acc;
+		}, {});
 	// $: console.log(filteredItems, typeof filteredItems);
 
 	let newItem = '';
