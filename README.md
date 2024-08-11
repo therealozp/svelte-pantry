@@ -1,38 +1,7 @@
-# create-svelte
+# simple pantry tracker app
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+nothing much to see here, just a very simple pantry tracker app made with Svelte and Firebase. Originally, HS recommended Next, but since I have had a fair amount of projects with the React framework, I figured I might as well take this opportunity to learn something new.
 
-## Creating a project
+![UI of pantry dashboard](/static/hspantry.png)
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+this is made with Svelte and Shadcn for the clean look, and Firebase for the backend. very good introduction, opened my eyes to see the power of concision that Svelte offers.
