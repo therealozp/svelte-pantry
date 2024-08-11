@@ -12,13 +12,23 @@
 	} from '$lib/components/ui/dialog/index.js';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { onMount } from 'svelte';
+	import fuzzysort from 'fuzzysort';
 
 	let items;
 	itemStore.subscribe((value) => {
 		items = value;
 	});
 
+	$: filteredItems = fuzzysort
+		.go(searchValue, Object.values(items), {
+			key: 'name',
+			all: true,
+		})
+		.map((result) => result.obj);
+	// $: console.log(filteredItems, typeof filteredItems);
+
 	let newItem = '';
+	let searchValue = '';
 	let isDialogOpen = false;
 
 	const isObjectEmpty = (objectName) => {
@@ -69,19 +79,25 @@
 
 <Dialog bind:open={isDialogOpen}>
 	<div class="flex flex-col justify-center items-center h-screen">
-		<h1
-			class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-8"
-		>
+		<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
 			Pantry Tracker
 		</h1>
+		<Input
+			bind:value={searchValue}
+			class="m-4 w-60 border-slate-50 h-12"
+			placeholder="Search for item..."
+		/>
 		<div class="flex flex-col overflow-y-auto h-3/5 mb-8">
-			{#if isObjectEmpty(items)}
-				<p>No items in your pantry. Click "Add Item" to add.</p>
+			{#if isObjectEmpty(filteredItems) || filteredItems.length === 0}
+				<p class="justify-self-center">
+					No items in your pantry that matches the query. Click "Add Item" to
+					add.
+				</p>
 			{:else}
-				{#each Object.keys(items) as itemId}
+				{#each Object.keys(filteredItems) as itemId}
 					<PantryItem
-						item={items[itemId].name}
-						count={items[itemId].count}
+						item={filteredItems[itemId].name}
+						count={filteredItems[itemId].count}
 						{itemId}
 					/>
 				{/each}
