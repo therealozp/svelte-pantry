@@ -46,13 +46,6 @@
 		);
 	};
 
-	const handleAddItem = (newItem) => {
-		addItem(newItem);
-		getInventory();
-		newItem = '';
-		isDialogOpen = false;
-	};
-
 	const addItem = async (itemName) => {
 		const res = await fetch(`/api/addItem`, {
 			method: 'POST',
@@ -73,8 +66,15 @@
 			},
 		});
 		const data = await res.json();
-		console.log(data);
+		console.log('from getInventory: ', data);
 		itemStore.set(data);
+	};
+
+	const handleAddItem = (newItem) => {
+		addItem(newItem);
+		getInventory();
+		newItem = '';
+		isDialogOpen = false;
 	};
 
 	onMount(() => {
